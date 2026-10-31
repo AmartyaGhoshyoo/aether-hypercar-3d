@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AETHER One — the electric hypercar</title>
+    <meta name="description" content="AETHER One: 1,020 kW, 0–100 in 1.9 s, a drag coefficient of 0.21. Orbit it, x-ray it, configure it and reserve a build slot." />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Honest loader: fills as the car really downloads, leaves when the first frame is drawn. -->
+    <div id="veil" aria-hidden="true">
+      <p class="veil-mark">AETHER</p>
+      <div class="veil-bar"><span></span></div>
+      <p class="veil-pct mono">0%</p>
+    </div>
+
+    <header class="nav">
+      <a href="#top" class="logo">AETHER<span>/</span>ONE</a>
+      <nav>
+        <a href="#drive">Car</a>
+        <a href="#made">Made</a>
+        <a href="#lap">Lap</a>
+        <a href="#build">Configure</a>
+      </nav>
+      <a href="#build" class="nav-cta">Reserve</a>
+    </header>
+
+    <main id="top">
+      <!-- 1 · The drive: one 3D car, the camera orbits it as you scroll; the cursor x-rays it. -->
+      <section id="drive" class="drive">
+        <div class="stage">
+          <canvas id="car" aria-label="AETHER One in 3D"></canvas>
+          <div class="hud mono" aria-hidden="true">
+            <span id="hud-ch">01 / 05</span>
+            <span id="hud-cam">CAM 042° · 1.4 m</span>
+            <span class="hud-hint">Move the cursor to x-ray the car</span>
+          </div>
+          <div class="chapters">
+            <article class="ch is-on" data-ch="0">
+              <p class="kicker mono">Electric hypercar · build slots 2027</p>
+              <h1 class="title split">AETHER <em>One</em></h1>
+              <p class="lede">Four motors, one carbon tub, no compromise in the dark. Scroll to walk around it.</p>
+            </article>
+            <article class="ch" data-ch="1">
+              <p class="kicker mono">Aero</p>
+              <h2 class="big split">Cd 0.21</h2>
+              <p class="lede">Air goes over it, not into it. Active rear wing, sealed underfloor, a body shaped in the wind tunnel for 1,400 hours.</p>
+            </article>
+            <article class="ch" data-ch="2">
+              <p class="kicker mono">Power</p>
+              <h2 class="big split">1,020 kW</h2>
+              <p class="lede">Four axial-flux motors, torque vectored a thousand times a second. 0–100 km/h in 1.9 s.</p>
+            </article>
+            <article class="ch" data-ch="3">
+              <p class="kicker mono">Battery</p>
+              <h2 class="big split">108 kWh</h2>
+              <p class="lede">Structural cells in the floor keep it low: 41 cm centre of gravity, 610 km of range, 10–80% in 14 minutes.</p>
+            </article>
+            <article class="ch" data-ch="4">
+              <p class="kicker mono">Yours</p>
+              <h2 class="big split">99 cars.</h2>
+              <p class="lede">Hand-built in Hall 7. Configure yours below and hold a build slot.</p>
+              <a href="#build" class="btn">Configure yours</a>
+            </article>
+          </div>
+          <div class="progress"><span id="drive-bar"></span></div>
+        </div>
+      </section>
+
+      <!-- 2 · Made: sticky cards that recede; each photo is raised into 3D from its depth map. -->
+      <section id="made" class="made">
+        <div class="made-head">
+          <p class="kicker mono">How it's made</p>
+          <h2 class="sec-title split">Shaped in the dark. <em>Built by machines.</em></h2>
+        </div>
+        <div class="stack">
+          <article class="card">
+            <div class="card-in">
+              <canvas class="depth" data-photo="/img/sculpt.webp" data-depth="/img/sculpt_depth.png"></canvas>
+              <div class="card-copy">
+                <p class="mono">01 · Design</p>
+                <h3>Sculpted under one light</h3>
+                <p>Every surface was judged in a black room with a single strip light — if a reflection breaks, the panel is redone.</p>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-in">
+              <canvas class="depth" data-photo="/img/robots.webp" data-depth="/img/robots_depth.png"></canvas>
+              <div class="card-copy">
+                <p class="mono">02 · Assembly</p>
+                <h3>412 robots, 31 people</h3>
+                <p>Robots weld and bond the carbon tub to 0.1 mm. People do what robots can't: the paint check, the stitching, the first drive.</p>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-in">
+              <canvas class="depth" data-photo="/img/body.webp" data-depth="/img/body_depth.png"></canvas>
+              <div class="card-copy">
+                <p class="mono">03 · Structure</p>
+                <h3>Body-in-white: 182 kg</h3>
+                <p>The whole structure weighs less than two passengers, and the battery is part of it — the floor is the pack.</p>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-in">
+              <canvas class="depth" data-photo="/img/night.webp" data-depth="/img/night_depth.png"></canvas>
+              <div class="card-copy">
+                <p class="mono">04 · Road</p>
+                <h3>Quiet in town. Not on the Ring.</h3>
+                <p>Comfort mode hums at 31 dB. Track mode drops it 20 mm, wakes the wing and opens the sound of the motors.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3 · The lap: a track drawn by scroll; the head brakes into corners and glows hot. -->
+      <section id="lap" class="lap">
+        <div class="stage lap-stage">
+          <canvas id="track" aria-label="Lap of the test circuit"></canvas>
+          <div class="lap-copy">
+            <p class="kicker mono">Proving ground · 20.8 km</p>
+            <h2 class="sec-title split">One lap. <em>Scroll to drive it.</em></h2>
+          </div>
+          <dl class="lap-hud mono">
+            <div><dt>Lap</dt><dd id="lap-time">0:00.00</dd></div>
+            <div><dt>Speed</dt><dd><span id="lap-speed">0</span> km/h</dd></div>
+            <div><dt>Sector</dt><dd id="lap-sector">S1</dd></div>
+            <div><dt>Battery</dt><dd><span id="lap-batt">100</span>%</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- 4 · Configure & reserve. -->
+      <section id="build" class="build">
+        <div class="build-view">
+          <canvas id="config" aria-label="Your AETHER One"></canvas>
+        </div>
+        <div class="build-panel">
+          <p class="kicker mono">Configure</p>
+          <h2 class="sec-title">Make it <em>yours.</em></h2>
+          <fieldset>
+            <legend class="mono">Paint · <span id="paint-name">Ice Silver</span></legend>
+            <div class="swatches" id="paints"></div>
+          </fieldset>
+          <fieldset>
+            <legend class="mono">Wheels</legend>
+            <div class="chips" id="wheels"></div>
+          </fieldset>
+          <fieldset>
+            <legend class="mono">Pack</legend>
+            <div class="chips" id="packs"></div>
+          </fieldset>
+          <div class="total">
+            <p class="mono">Your AETHER One</p>
+            <p class="price" id="price">$289,000</p>
+            <p class="small">Build slot deposit $2,500 — refundable until production starts.</p>
+          </div>
+          <button class="btn btn-wide" id="reserve">Reserve a build slot</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="reserve-dialog">
+      <form method="dialog" id="reserve-form">
+        <p class="kicker mono">Build slot</p>
+        <h3>Hold your AETHER One</h3>
+        <p class="small" id="reserve-sum"></p>
+        <label>Name<input name="name" required autocomplete="name" /></label>
+        <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+        <label>City<input name="city" required autocomplete="address-level2" /></label>
+        <div class="dialog-actions">
+          <button value="cancel" formnovalidate class="btn btn-ghost">Cancel</button>
+          <button value="ok" class="btn">Hold my slot</button>
+        </div>
+      </form>
+      <div id="reserve-done" hidden>
+        <p class="kicker mono">Held</p>
+        <h3>Slot <span id="slot-no"></span> is yours.</h3>
+        <p class="small">A demo — nothing was charged and nothing was sent.</p>
+        <button class="btn" id="reserve-close">Close</button>
+      </div>
+    </dialog>
+
+    <footer class="foot">
+      <p class="logo">AETHER<span>/</span>ONE</p>
+      <p class="small">A concept site by Amartya Ghosh. AETHER is fictional.</p>
+      <details class="credits small">
+        <summary>Credits</summary>
+        <p>3D car: “Car Concept” © 2024 Darmstadt Graphics Group GmbH, model &amp; textures by Eric Chadwick, CC BY 4.0 (Khronos glTF Sample Assets), logos replaced. Studio light: Poly Haven “Studio Small 09”, CC0. Photos: Unsplash (Unsplash License). Depth maps made with Depth-Anything V2 Small (Apache-2.0).</p>
+      </details>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
