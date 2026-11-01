@@ -1,5 +1,5 @@
 // Nº77: one ticker drives everything (Lenis first). Two image sequences rendered in Blender:
-// the story (200 frames: hero → tear apart → a tour of every part → rebuild) and the spin
+// the story (400 frames: hero → tear apart → a tour of every part → rebuild) and the spin
 // (120 frames, one every 3°). Text on screen is tied to frame numbers, not scroll pixels.
 import Lenis from "lenis";
 import { createLap } from "./lap.js";
@@ -29,7 +29,7 @@ addEventListener("pointermove", (e) => ((mouse.x = e.clientX / innerWidth - 0.5)
 const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.min(Math.max(W / im.width, H / im.height) * 0.8, 1), cx: 0.62, cy: 0.5 });
 
 // ── The story ─────────────────────────────────────────────────────────────
-const SF = 200;
+const SF = 400;
 const veil = $("#veil"), bar = $(".veil-bar span"), pct = $(".veil-pct b");
 const storySeq = createSequence({
   canvas: $("#sseq"),
@@ -49,7 +49,7 @@ storySeq.start();
 const story = $("#story");
 const sseq = $("#sseq");
 const timed = $$("#story [data-from]").map((el) => ({ el, from: +el.dataset.from, to: +el.dataset.to }));
-const phases = [[0, "Assembled"], [24, "Coming apart"], [76, "Part tour"], [176, "Rebuilding"], [196, "Assembled"]];
+const phases = [[0, "Assembled"], [48, "Coming apart"], [152, "Part tour"], [352, "Rebuilding"], [392, "Assembled"]];
 
 // ── The spin ──────────────────────────────────────────────────────────────
 const SPIN = 120;
