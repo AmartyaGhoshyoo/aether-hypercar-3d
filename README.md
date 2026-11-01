@@ -7,7 +7,8 @@ photographic look that real-time 3D can't reach.
 
 ## What it does
 
-1. **The spin (560svh, pinned):** a canvas draws frame `round(progress × 119)`; the car turns a full
+1. **The story (820svh, pinned):** a 200-frame Blender film — the car tears apart, the camera visits six parts with descriptions, then it rebuilds.
+2. **The spin (320svh, pinned):** a canvas draws frame `round(progress × 119)`; the car turns a full
    360° while five chapters of copy swap in. Frames load in a smart order (every 8th first) so the car
    appears instantly, and an honest loader fills with the real download.
 2. **Details:** close-up renders (nose, wheel, wing, profile) on cards that stack and recede.

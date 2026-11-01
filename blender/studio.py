@@ -18,7 +18,8 @@ if model.lower().endswith((".glb", ".gltf")):
 else:
     bpy.ops.import_scene.fbx(filepath=model)
 EXPLODE = os.environ.get("STUDIO_EXPLODE") == "1"
-if EXPLODE:
+STORY = os.environ.get("STUDIO_STORY") == "1"
+if EXPLODE or STORY:
     # Tyres, rims and brakes come as one object each holding all four wheels: split them apart.
     for name in ("Object_8", "Object_6", "Object_18"):
         o = bpy.data.objects.get(name)
@@ -213,6 +214,122 @@ scene.view_settings.view_transform = "AgX"
 scene.view_settings.look = "AgX - Medium High Contrast"
 scene.render.image_settings.file_format = "PNG"
 os.makedirs(out_dir, exist_ok=True)
+
+
+# Story: STUDIO_STORY=1 renders one continuous scroll film:
+#   A hero orbit → B the car tears apart (parts float, tilt, wheels roll out) → C the camera visits
+#   each part in turn → D everything flies home. Frames first..last of `total`.
+if STORY:
+    from mathutils import Matrix
+    GROUPS = {"shell": ["Object_14", "Object_36", "Object_38", "Object_16", "Object_20"], "cage": ["Object_24"],
+              "cockpit": ["Object_26", "Object_28", "Object_30", "Object_32", "Object_34"], "engine": ["Object_22", "Object_12"],
+              "aero": ["Object_10"], "tyre": ["Object_8"], "rim": ["Object_6"], "brake": ["Object_18"]}
+    def group_of(o):
+        for g, names in GROUPS.items():
+            if any(o.name == n or o.name.startswith(n + ".") for n in names):
+                return g
+        return "floor"
+    # (offset in metres, extra rotation in degrees (x, y, z), start delay 0..0.35)
+    PLAN = {"shell": ((0, 0.25, 2.6), (-7, 4, 9), 0.0), "cage": ((0, 0.1, 1.45), (0, 0, -8), 0.1), "cockpit": ((0, 0, 0.6), (0, 0, 5), 0.2),
+            "engine": ((0, -0.75, 0.55), (6, 0, -10), 0.25), "aero": ((0, -1.4, -0.02), (0, 0, 0), 0.15),
+            "tyre": ((1.3, 0, 0.12), (0, 0, 0), 0.08), "rim": ((1.3, 0, 0.12), (0, 0, 0), 0.08), "brake": ((0.75, 0, 0.12), (0, 0, 0), 0.14), "floor": ((0, 0, 0), (0, 0, 0), 0)}
+    parts = []
+    for i, o in enumerate(meshes):
+        g = group_of(o)
+        pts = [o.matrix_world @ Vector(v) for v in o.bound_box]
+        c = sum(pts, Vector()) / 8
+        off, rot, delay = PLAN[g]
+        off = Vector(off)
+        if g in ("tyre", "rim", "brake"):
+            off.x *= 1 if c.x > 0 else -1
+        parts.append({"o": o, "g": g, "base": o.matrix_world.copy(), "c": c, "off": off, "rot": rot, "delay": delay, "seed": i,
+                      "lo": Vector(map(min, *pts)) if False else Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts))),
+                      "hi": Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))})
+    # Each wheel corner spins about its own axle (tyre/rim/brake come as many loose pieces).
+    corner_key = lambda c: (c.x > 0, c.y > 0)
+    pivots = {}
+    for p in parts:
+        if p["g"] == "tyre":
+            pivots.setdefault(corner_key(p["c"]), []).append(p["c"])
+    pivots = {k: sum(v, Vector()) / len(v) for k, v in pivots.items()}
+    for p in parts:
+        if p["g"] in ("tyre", "rim", "brake"):
+            p["pivot"] = pivots.get(corner_key(p["c"]), p["c"])
+    ease = lambda t: t * t * (3 - 2 * t)
+    clamp = lambda t: min(1.0, max(0.0, t))
+    N = total
+    A, B, C, D = round(N * 0.12), round(N * 0.36), round(N * 0.88), N - 1   # phase boundaries
+    def opening(f):
+        if f < A: return 0.0
+        if f < B: return ease((f - A) / (B - A))
+        if f < C: return 1.0
+        return 1 - ease((f - C) / (D - C))
+    def pose(f):
+        op = opening(f)
+        for p in parts:
+            k = ease(clamp((op - p["delay"]) / 0.65))
+            bob = Vector((0, 0, 0.035 * math.sin(f * 0.12 + p["seed"]))) * k if p["g"] != "floor" else Vector()
+            delta = p["off"] * k + bob
+            if p["g"] in ("tyre", "rim", "brake"):
+                R = Matrix.Identity(4)  # wheels slide out without spinning (spinning broke the tyre mesh)
+            else:
+                rx, ry, rz = (math.radians(a) * k for a in p["rot"])
+                R = Matrix.Rotation(rz, 4, "Z") @ Matrix.Rotation(ry, 4, "Y") @ Matrix.Rotation(rx, 4, "X")
+            c = p.get("pivot", p["c"])
+            p["o"].matrix_world = Matrix.Translation(c + delta) @ R @ Matrix.Translation(-c) @ p["base"]
+        return op
+    # Tour targets: the exploded centre of each group (the wheel = one front corner).
+    def centre(groups, pick=None):
+        sel = [p for p in parts if p["g"] in groups and (pick is None or pick(p))]
+        lo = Vector((min(p["lo"].x for p in sel), min(p["lo"].y for p in sel), min(p["lo"].z for p in sel)))
+        hi = Vector((max(p["hi"].x for p in sel), max(p["hi"].y for p in sel), max(p["hi"].z for p in sel)))
+        mid = (lo + hi) / 2
+        off = sum((p["off"] for p in sel), Vector()) / len(sel)
+        return mid + off, (hi - lo).length
+    corner = lambda p: p["c"].x < 0 and p["c"].y > 0
+    STOPS = [
+        ("shell", centre(["shell"]), Vector((-0.55, -0.75, 0.42))),
+        ("cage", centre(["cage"]), Vector((-0.7, -0.6, 0.25))),
+        ("cockpit", centre(["cockpit"]), Vector((-0.45, -0.8, 0.55))),
+        ("engine", centre(["engine"]), Vector((0.55, -0.8, 0.35))),
+        ("wheel", centre(["tyre", "rim", "brake"], corner), Vector((-0.55, -0.8, 0.3))),
+        ("aero", (Vector((0, min(p["lo"].y for p in parts if p["g"] == "aero") - 1.05, 0.12)), 2.4), Vector((-0.45, -0.75, 0.5))),
+    ]
+    def orbit(a, r, z, look_z):
+        a = math.radians(a)
+        return Vector((math.sin(a) * r, -math.cos(a) * r, z)), Vector((0, 0, look_z))
+    KEYS = []                                    # (frame, camera position, look-at)
+    KEYS.append((0, *orbit(48, 8.8, 1.3, 0.55)))
+    KEYS.append((A, *orbit(-32, 8.0, 1.45, 0.6)))
+    KEYS.append((B, Vector((-7.6, -9.4, 5.8)), Vector((0, 0, 1.45))))
+    span = (C - B) / len(STOPS)
+    for i, (name, (ctr, size), d) in enumerate(STOPS):
+        dist = max(2.4 if name in ("wheel", "aero") else 1.6, size * 0.95)
+        pos = ctr + d.normalized() * dist
+        KEYS.append((round(B + span * i + span * 0.4), pos, ctr))
+        KEYS.append((round(B + span * (i + 1) - 1), ctr + d.normalized() * dist * 0.88, ctr))
+    KEYS.append((round(C + (D - C) * 0.35), Vector((-7.6, -9.4, 5.8)), Vector((0, 0, 1.45))))
+    KEYS.append((D, *orbit(-32, 8.0, 1.45, 0.6)))
+    def camera_at(f):
+        for (f0, p0, l0), (f1, p1, l1) in zip(KEYS, KEYS[1:]):
+            if f0 <= f <= f1:
+                t = ease((f - f0) / max(1, f1 - f0))
+                return p0.lerp(p1, t), l0.lerp(l1, t)
+        return KEYS[-1][1], KEYS[-1][2]
+    cam.constraints.clear()
+    cam_data.lens = 40
+    cam_data.dof.use_dof = False
+    print("STOPS", [(n, round(B + span * i + span * 0.4), round(B + span * (i + 1) - 1)) for i, (n, _, _) in enumerate(STOPS)], "A", A, "B", B, "C", C, "D", D, flush=True)
+    for f in range(first, last + 1):
+        pose(f)
+        pos, look = camera_at(f)
+        cam.location = pos
+        cam.rotation_euler = (look - pos).to_track_quat("-Z", "Y").to_euler()
+        bpy.context.view_layer.update()
+        scene.render.filepath = os.path.join(out_dir, f"s_{f:03d}.png")
+        bpy.ops.render.render(write_still=True)
+        print("RENDERED", f, flush=True)
+    raise SystemExit
 
 # Exploded view: STUDIO_EXPLODE=1 renders frames 0..total-1 with the car coming apart in stages.
 if EXPLODE:

@@ -45,8 +45,38 @@ em { font-style: normal; color: var(--red); }
 
 .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 
-/* 1 · Spin */
-.spin { position: relative; height: 560svh; }
+/* 1 · Story (tear-apart film) */
+.story { position: relative; height: 820svh; }
+.story .stage::after { content: ""; position: absolute; inset: 0 60% 0 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(4, 4, 6, 0.7), transparent); }
+@media (max-width: 720px) { .story .stage::after { inset: 50% 0 0 0; background: linear-gradient(0deg, rgba(4, 4, 6, 0.9), transparent); } }
+#sseq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.beat, .part { position: absolute; z-index: 2; left: clamp(16px, 5vw, 72px); max-width: 27rem; opacity: 0; transform: translateY(18px); transition: opacity 0.45s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; }
+.beat.on, .part.on { opacity: 1; transform: none; pointer-events: auto; }
+.beat-hero { bottom: 12svh; }
+.beat-mid, .beat-end { top: 50%; margin-top: -9rem; }
+.part { top: 50%; margin-top: -8rem; padding: 26px 26px 22px; background: rgba(10, 10, 11, 0.72); backdrop-filter: blur(10px); border-left: 3px solid var(--red); }
+.part-n { color: var(--red-soft); }
+.part h3 { font: 800 clamp(2.2rem, 4vw, 3.4rem) / 0.95 var(--display); text-transform: uppercase; font-style: italic; margin: 10px 0 12px; }
+.part p:not(.part-n) { color: rgba(244, 244, 242, 0.8); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; list-style: none; padding: 0; }
+.chips li { border: 1px solid var(--line); padding: 5px 8px; font-size: 0.64rem; }
+.rail { position: absolute; z-index: 2; right: clamp(16px, 4vw, 48px); top: 50%; transform: translateY(-50%); list-style: none; padding: 0; display: grid; gap: 12px; text-align: right; color: var(--mute); transition: opacity 0.4s; }
+.rail li { transition: color 0.3s; }
+.rail li::after { content: ""; display: inline-block; width: 18px; height: 1px; margin-left: 10px; vertical-align: middle; background: currentColor; transition: width 0.3s; }
+.rail li.on { color: var(--white); }
+.rail li.on::after { width: 40px; background: var(--red); }
+.spin-copy { position: absolute; left: clamp(16px, 5vw, 72px); top: 50%; transform: translateY(-50%); max-width: 24rem; z-index: 2; }
+@media (max-width: 720px) {
+  .beat, .part { left: 16px; right: 16px; }
+  .beat-hero { bottom: 70px; }
+  .beat-mid, .beat-end, .part { top: auto; bottom: 64px; margin-top: 0; }
+  .part { padding: 18px; }
+  .rail { display: none; }
+  .spin-copy { top: auto; bottom: 64px; transform: none; right: 16px; }
+}
+
+/* 2 · Spin */
+.spin { position: relative; height: 320svh; }
 #seq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .chapters { position: absolute; inset: 0; pointer-events: none; }
 /* A soft shadow behind the copy so it stays readable when the car turns side-on. */
@@ -71,28 +101,6 @@ em { font-style: normal; color: var(--red); }
   .hud span:nth-child(2) { display: none; }
 }
 
-/* 2 · Inside (exploded view) */
-.explode { position: relative; height: 520svh; }
-#xseq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.xcopy { position: absolute; left: clamp(16px, 5vw, 72px); top: 50%; transform: translateY(-50%); max-width: 24rem; z-index: 2; }
-.xtitle { font: 800 clamp(3rem, 6vw, 5.2rem) / 0.86 var(--display); text-transform: uppercase; font-style: italic; margin: 12px 0 22px; }
-.xsteps { list-style: none; padding: 0; counter-reset: s; }
-.xstep { counter-increment: s; position: relative; padding: 10px 0 10px 40px; border-top: 1px solid var(--line); opacity: 0.4; transition: opacity 0.4s; }
-.xstep::before { content: attr(data-n); position: absolute; left: 0; top: 12px; font: 700 0.72rem/1 var(--mono); color: var(--red-soft); }
-.xstep b { font: 700 1.15rem/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.04em; display: block; }
-.xstep span { display: block; max-height: 0; overflow: hidden; color: rgba(244, 244, 242, 0.72); font-size: 0.93rem; transition: max-height 0.5s, margin 0.5s; }
-.xstep.on { opacity: 1; }
-.xstep.on span { max-height: 6em; margin-top: 6px; }
-.xlabel { position: absolute; z-index: 2; transform: translate(-50%, -50%); opacity: 0; pointer-events: none; font: 700 0.68rem/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10, 10, 11, 0.8); border: 1px solid var(--red); padding: 6px 8px; white-space: nowrap; transition: opacity 0.2s; }
-.xlabel::before { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 14px; background: var(--red); }
-@media (max-width: 720px) {
-  .xcopy { top: auto; bottom: 28px; transform: none; right: 16px; }
-  .xtitle { margin-bottom: 10px; }
-  .xstep { padding: 6px 0 6px 34px; }
-  .xstep:not(.on) { display: none; }
-  .xlabel { font-size: 0.58rem; padding: 4px 6px; }
-}
-
 /* 3 · Details (stack recede) */
 .details { position: relative; padding: 16svh clamp(16px, 4vw, 48px) 10svh; }
 .sec-head { max-width: 1200px; margin: 0 auto 7svh; }
@@ -108,7 +116,7 @@ em { font-style: normal; color: var(--red); }
 .card-copy p:last-child { color: rgba(244, 244, 242, 0.75); }
 
 /* 3 · Lap */
-.lap { position: relative; height: 400svh; }
+.lap { position: relative; height: 280svh; }
 .lap-stage { background: radial-gradient(ellipse at 60% 50%, #1d0a0d, var(--carbon) 70%); }
 #track { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .lap-copy { position: absolute; left: clamp(16px, 5vw, 72px); top: 14svh; max-width: 26rem; }

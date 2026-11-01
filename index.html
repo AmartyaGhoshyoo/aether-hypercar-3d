@@ -22,8 +22,8 @@
     <header class="nav">
       <a href="#top" class="logo"><span class="logo-n">Nº77</span> GT300</a>
       <nav>
-        <a href="#spin">Car</a>
-        <a href="#explode">Inside</a>
+        <a href="#story">Inside</a>
+        <a href="#spin">360°</a>
         <a href="#details">Details</a>
         <a href="#lap">Lap</a>
         <a href="#specs">Specs</a>
@@ -32,71 +32,74 @@
     </header>
 
     <main id="top">
-      <!-- 1 · The spin: 120 studio renders; scrolling turns the car through 360°. -->
-      <section id="spin" class="spin">
+      <!-- 1 · The story: one Blender film driven by scroll — hero, tear-apart, a tour of every part, rebuild. -->
+      <section id="story" class="story">
         <div class="stage">
-          <canvas id="seq" aria-label="The Nº77 GR Supra GT300 turning in a studio"></canvas>
-          <div class="chapters">
-            <article class="ch is-on" data-ch="0">
-              <p class="kicker mono">Super GT · GT300 class</p>
-              <h1 class="title">GR Supra<br /><em>GT300</em></h1>
-              <p class="lede">A race car built for Japan's Super GT. Scroll, and walk all the way around it.</p>
-            </article>
-            <article class="ch" data-ch="1">
-              <p class="kicker mono">01 · Body</p>
-              <h2 class="big">Carbon,<br />and wide.</h2>
-              <p class="lede">Wider arches, a carbon body and a stance just millimetres off the track.</p>
-            </article>
-            <article class="ch" data-ch="2">
-              <p class="kicker mono">02 · Aero</p>
-              <h2 class="big">Downforce<br />first.</h2>
-              <p class="lede">A front splitter, a flat floor, a diffuser — and a rear wing that presses the car into every corner.</p>
-            </article>
-            <article class="ch" data-ch="3">
-              <p class="kicker mono">03 · Power</p>
-              <h2 class="big">Turbo<br />four.</h2>
-              <p class="lede">A race-tuned turbocharged four-cylinder, set up for long stints and hard exits.</p>
-            </article>
-            <article class="ch" data-ch="4">
-              <p class="kicker mono">04 · Nº77</p>
-              <h2 class="big">Built<br />to race.</h2>
-              <p class="lede">Every panel and sticker is real geometry — 357,000 triangles, lit in a studio, frame by frame.</p>
-              <a href="#details" class="btn">See the details</a>
-            </article>
+          <canvas id="sseq" aria-label="The race car coming apart into its parts and back together"></canvas>
+          <div class="beat beat-hero on" data-from="0" data-to="22">
+            <p class="kicker mono">Super GT · GT300 class</p>
+            <h1 class="title">GR Supra<br /><em>GT300</em></h1>
+            <p class="lede">A race car built for Japan's Super GT. Keep scrolling — we're going to take it apart.</p>
           </div>
-          <div class="hud mono" aria-hidden="true">
-            <span id="hud-ch">01 / 05</span>
-            <span>Rotation <b id="hud-rot">000°</b></span>
-            <span>Frame <b id="hud-frame">001</b> / 120</span>
+          <div class="beat beat-mid" data-from="26" data-to="72">
+            <p class="kicker mono">Inside the car</p>
+            <h2 class="big">Take it<br /><em>apart.</em></h2>
           </div>
-          <div class="progress"><span id="spin-bar"></span></div>
+          <article class="part" data-from="76" data-to="92">
+            <p class="part-n mono">01 / 06</p><h3>Body shell</h3>
+            <p>Carbon-fibre panels that carry the livery. Light, stiff, and quick to swap after contact.</p>
+            <ul class="chips mono"><li>Carbon fibre</li><li>Widebody</li><li>Bolt-on panels</li></ul>
+          </article>
+          <article class="part" data-from="93" data-to="109">
+            <p class="part-n mono">02 / 06</p><h3>Roll cage</h3>
+            <p>A welded steel safety cell inside the shell. It keeps the driver's space intact in a crash and makes the chassis stiffer.</p>
+            <ul class="chips mono"><li>Welded steel</li><li>FIA-spec</li><li>Adds stiffness</li></ul>
+          </article>
+          <article class="part" data-from="110" data-to="126">
+            <p class="part-n mono">03 / 06</p><h3>Cockpit</h3>
+            <p>One seat, a race wheel and a dash display. Everything the driver needs within a hand's reach, nothing else.</p>
+            <ul class="chips mono"><li>Single seat</li><li>Race display</li><li>Quick-release wheel</li></ul>
+          </article>
+          <article class="part" data-from="127" data-to="143">
+            <p class="part-n mono">04 / 06</p><h3>Engine &amp; gearbox</h3>
+            <p>A turbocharged four-cylinder and a sequential gearbox, mounted low and far back for balance.</p>
+            <ul class="chips mono"><li>Turbo four</li><li>Sequential box</li><li>Mounted low</li></ul>
+          </article>
+          <article class="part" data-from="144" data-to="161">
+            <p class="part-n mono">05 / 06</p><h3>Wheel &amp; brake</h3>
+            <p>A slick tyre on a forged rim, with the brake and suspension behind it — the only parts that touch the track.</p>
+            <ul class="chips mono"><li>Slick tyre</li><li>Forged rim</li><li>Race brakes</li></ul>
+          </article>
+          <article class="part" data-from="162" data-to="176">
+            <p class="part-n mono">06 / 06</p><h3>Splitter</h3>
+            <p>The blade under the nose. With the flat floor it pulls the car onto the track at speed — grip without extra weight.</p>
+            <ul class="chips mono"><li>Downforce</li><li>Flat floor</li><li>Adjustable</li></ul>
+          </article>
+          <div class="beat beat-end" data-from="186" data-to="199">
+            <p class="kicker mono">Back together</p>
+            <h2 class="big">Built<br /><em>to race.</em></h2>
+            <a href="#spin" class="btn">Walk around it</a>
+          </div>
+          <ol class="rail mono" aria-hidden="true">
+            <li data-from="76" data-to="92">Shell</li><li data-from="93" data-to="109">Cage</li><li data-from="110" data-to="126">Cockpit</li>
+            <li data-from="127" data-to="143">Engine</li><li data-from="144" data-to="161">Wheel</li><li data-from="162" data-to="176">Splitter</li>
+          </ol>
+          <div class="hud mono" aria-hidden="true"><span id="s-phase">Assembled</span><span>Frame <b id="s-frame">001</b> / 200</span></div>
+          <div class="progress"><span id="s-bar"></span></div>
         </div>
       </section>
 
-      <!-- 2 · Inside: the car comes apart as you scroll, each part explained, then goes back together. -->
-      <section id="explode" class="explode">
+      <!-- 2 · Walk around it: 120 renders, one every 3°. -->
+      <section id="spin" class="spin">
         <div class="stage">
-          <canvas id="xseq" aria-label="The race car opening into its parts"></canvas>
-          <div class="xcopy">
-            <p class="kicker mono">Inside the car</p>
-            <h2 class="xtitle">Take it <em>apart.</em></h2>
-            <ol class="xsteps">
-              <li data-n="01" class="xstep on"><b>Body shell</b><span>Carbon panels carrying the livery — light, and easy to swap after a hit.</span></li>
-              <li data-n="02" class="xstep"><b>Roll cage</b><span>A steel safety cell welded inside the shell that keeps the driver's space intact in a crash.</span></li>
-              <li data-n="03" class="xstep"><b>Cockpit</b><span>One seat, a race wheel and a dash display — everything the driver needs, nothing else.</span></li>
-              <li data-n="04" class="xstep"><b>Engine &amp; gearbox</b><span>The turbocharged four-cylinder and its sequential gearbox, set low for balance.</span></li>
-              <li data-n="05" class="xstep"><b>Wheels</b><span>Tyre, rim and brake — slicks for grip, forged rims to save weight, big brakes to stop.</span></li>
-              <li data-n="06" class="xstep"><b>Splitter &amp; aero</b><span>The splitter and floor pull the car down onto the track at speed.</span></li>
-            </ol>
+          <canvas id="seq" aria-label="The car turning through 360°"></canvas>
+          <div class="spin-copy">
+            <p class="kicker mono">Walk around it</p>
+            <h2 class="big">Every<br /><em>angle.</em></h2>
+            <p class="lede">120 studio renders, one every 3°. Scroll to turn it.</p>
           </div>
-          <span class="xlabel" data-x="0.5" data-y="0.2">Body shell</span>
-          <span class="xlabel" data-x="0.48" data-y="0.43">Roll cage</span>
-          <span class="xlabel" data-x="0.37" data-y="0.5">Rear wing</span>
-          <span class="xlabel" data-x="0.5" data-y="0.6">Cockpit</span>
-          <span class="xlabel" data-x="0.62" data-y="0.68">Engine bay</span>
-          <span class="xlabel" data-x="0.42" data-y="0.8">Tyre · rim · brake</span>
-          <span class="xlabel" data-x="0.67" data-y="0.88">Splitter</span>
-          <div class="progress"><span id="x-bar"></span></div>
+          <div class="hud mono" aria-hidden="true"><span>Rotation <b id="hud-rot">000°</b></span><span>Frame <b id="hud-frame">001</b> / 120</span></div>
+          <div class="progress"><span id="spin-bar"></span></div>
         </div>
       </section>
 
