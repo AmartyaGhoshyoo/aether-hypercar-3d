@@ -9,7 +9,7 @@ const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
-const lenis = still ? null : new Lenis({ lerp: 0.12, anchors: true });
+const lenis = still ? null : new Lenis({ lerp: 0.1, anchors: true });
 
 const pinProgress = (el) => {
   const r = el.getBoundingClientRect();
@@ -24,7 +24,7 @@ const mouse = { x: 0, y: 0 }, m = { x: 0, y: 0 };
 addEventListener("pointermove", (e) => ((mouse.x = e.clientX / innerWidth - 0.5), (mouse.y = e.clientY / innerHeight - 0.5)), { passive: true });
 
 // Phones: the picture sits in the top part; wide screens: a little right of centre.
-const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.max(W / im.width, H / im.height) * 1.0, cx: 0.55, cy: 0.5 });
+const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.max(W / im.width, H / im.height), cx: 0.5, cy: 0.5 });
 
 // ── The story ─────────────────────────────────────────────────────────────
 const SF = 200;
@@ -45,6 +45,7 @@ const storySeq = createSequence({
 });
 storySeq.start();
 const story = $("#story");
+const sseq = $("#sseq");
 const timed = $$("#story [data-from]").map((el) => ({ el, from: +el.dataset.from, to: +el.dataset.to }));
 const phases = [[0, "Assembled"], [24, "Coming apart"], [76, "Part tour"], [176, "Rebuilding"], [196, "Assembled"]];
 
@@ -69,8 +70,9 @@ function tick(now) {
 
   if (onScreen(story)) {
     const p = pinProgress(story);
-    sPos += (p * (SF - 1) - sPos) * (still ? 1 : 0.16);
-    storySeq.draw(sPos, m);
+    sPos = p * (SF - 1);
+    storySeq.draw(sPos);
+    sseq.style.transform = `translate3d(${-m.x * 14}px, ${-m.y * 8}px, 0) scale(1.03)`;
     const f = Math.round(sPos);
     if (f !== lastS) {
       lastS = f;
@@ -83,8 +85,8 @@ function tick(now) {
 
   if (onScreen(spin)) {
     const p = pinProgress(spin);
-    spinPos += (p * (SPIN - 1) - spinPos) * (still ? 1 : 0.18);
-    spinSeq.draw(spinPos, m);
+    spinPos = p * (SPIN - 1);
+    spinSeq.draw(spinPos);
     const f = Math.round(spinPos);
     if (f !== lastF) {
       lastF = f;
