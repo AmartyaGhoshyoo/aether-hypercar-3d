@@ -3,199 +3,185 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AETHER One — the electric hypercar</title>
-    <meta name="description" content="AETHER One: 1,020 kW, 0–100 in 1.9 s, a drag coefficient of 0.21. Orbit it, x-ray it, configure it and reserve a build slot." />
-    <meta name="theme-color" content="#07080a" />
+    <title>Nº77 GR Supra GT300 — a studio showcase</title>
+    <meta name="description" content="A cinematic studio showcase of the Nº77 GR Supra GT300 race car: 120 film-quality renders that turn as you scroll, close-up details, a lap and the spec sheet." />
+    <meta name="theme-color" content="#0a0a0b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;700;800&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <!-- Honest loader: fills as the car really downloads, leaves when the first frame is drawn. -->
+    <!-- Honest loader: fills as the 120 renders really download. -->
     <div id="veil" aria-hidden="true">
-      <p class="veil-mark">AETHER</p>
+      <p class="veil-num">77</p>
       <div class="veil-bar"><span></span></div>
-      <p class="veil-pct mono">0%</p>
+      <p class="veil-pct mono">Loading the car <b>0%</b></p>
     </div>
 
     <header class="nav">
-      <a href="#top" class="logo">AETHER<span>/</span>ONE</a>
+      <a href="#top" class="logo"><span class="logo-n">Nº77</span> GT300</a>
       <nav>
-        <a href="#drive">Car</a>
-        <a href="#made">Made</a>
+        <a href="#spin">Car</a>
+        <a href="#explode">Inside</a>
+        <a href="#details">Details</a>
         <a href="#lap">Lap</a>
-        <a href="#build">Configure</a>
+        <a href="#specs">Specs</a>
       </nav>
-      <a href="#build" class="nav-cta">Reserve</a>
+      <a href="#specs" class="nav-cta">Spec sheet</a>
     </header>
 
     <main id="top">
-      <!-- 1 · The drive: one 3D car, the camera orbits it as you scroll; the cursor x-rays it. -->
-      <section id="drive" class="drive">
+      <!-- 1 · The spin: 120 studio renders; scrolling turns the car through 360°. -->
+      <section id="spin" class="spin">
         <div class="stage">
-          <canvas id="car" aria-label="AETHER One in 3D"></canvas>
-          <div class="hud mono" aria-hidden="true">
-            <span id="hud-ch">01 / 05</span>
-            <span id="hud-cam">CAM 042° · 1.4 m</span>
-            <span class="hud-hint">Move the cursor to x-ray the car</span>
-          </div>
+          <canvas id="seq" aria-label="The Nº77 GR Supra GT300 turning in a studio"></canvas>
           <div class="chapters">
             <article class="ch is-on" data-ch="0">
-              <p class="kicker mono">Electric hypercar · build slots 2027</p>
-              <h1 class="title split">AETHER <em>One</em></h1>
-              <p class="lede">Four motors, one carbon tub, no compromise in the dark. Scroll to walk around it.</p>
+              <p class="kicker mono">Super GT · GT300 class</p>
+              <h1 class="title">GR Supra<br /><em>GT300</em></h1>
+              <p class="lede">A race car built for Japan's Super GT. Scroll, and walk all the way around it.</p>
             </article>
             <article class="ch" data-ch="1">
-              <p class="kicker mono">Aero</p>
-              <h2 class="big split">Cd 0.21</h2>
-              <p class="lede">Air goes over it, not into it. Active rear wing, sealed underfloor, a body shaped in the wind tunnel for 1,400 hours.</p>
+              <p class="kicker mono">01 · Body</p>
+              <h2 class="big">Carbon,<br />and wide.</h2>
+              <p class="lede">Wider arches, a carbon body and a stance just millimetres off the track.</p>
             </article>
             <article class="ch" data-ch="2">
-              <p class="kicker mono">Power</p>
-              <h2 class="big split">1,020 kW</h2>
-              <p class="lede">Four axial-flux motors, torque vectored a thousand times a second. 0–100 km/h in 1.9 s.</p>
+              <p class="kicker mono">02 · Aero</p>
+              <h2 class="big">Downforce<br />first.</h2>
+              <p class="lede">A front splitter, a flat floor, a diffuser — and a rear wing that presses the car into every corner.</p>
             </article>
             <article class="ch" data-ch="3">
-              <p class="kicker mono">Battery</p>
-              <h2 class="big split">108 kWh</h2>
-              <p class="lede">Structural cells in the floor keep it low: 41 cm centre of gravity, 610 km of range, 10–80% in 14 minutes.</p>
+              <p class="kicker mono">03 · Power</p>
+              <h2 class="big">Turbo<br />four.</h2>
+              <p class="lede">A race-tuned turbocharged four-cylinder, set up for long stints and hard exits.</p>
             </article>
             <article class="ch" data-ch="4">
-              <p class="kicker mono">Yours</p>
-              <h2 class="big split">99 cars.</h2>
-              <p class="lede">Hand-built in Hall 7. Configure yours below and hold a build slot.</p>
-              <a href="#build" class="btn">Configure yours</a>
+              <p class="kicker mono">04 · Nº77</p>
+              <h2 class="big">Built<br />to race.</h2>
+              <p class="lede">Every panel and sticker is real geometry — 357,000 triangles, lit in a studio, frame by frame.</p>
+              <a href="#details" class="btn">See the details</a>
             </article>
           </div>
-          <div class="progress"><span id="drive-bar"></span></div>
+          <div class="hud mono" aria-hidden="true">
+            <span id="hud-ch">01 / 05</span>
+            <span>Rotation <b id="hud-rot">000°</b></span>
+            <span>Frame <b id="hud-frame">001</b> / 120</span>
+          </div>
+          <div class="progress"><span id="spin-bar"></span></div>
         </div>
       </section>
 
-      <!-- 2 · Made: sticky cards that recede; each photo is raised into 3D from its depth map. -->
-      <section id="made" class="made">
-        <div class="made-head">
-          <p class="kicker mono">How it's made</p>
-          <h2 class="sec-title split">Shaped in the dark. <em>Built by machines.</em></h2>
+      <!-- 2 · Inside: the car comes apart as you scroll, each part explained, then goes back together. -->
+      <section id="explode" class="explode">
+        <div class="stage">
+          <canvas id="xseq" aria-label="The race car opening into its parts"></canvas>
+          <div class="xcopy">
+            <p class="kicker mono">Inside the car</p>
+            <h2 class="xtitle">Take it <em>apart.</em></h2>
+            <ol class="xsteps">
+              <li data-n="01" class="xstep on"><b>Body shell</b><span>Carbon panels carrying the livery — light, and easy to swap after a hit.</span></li>
+              <li data-n="02" class="xstep"><b>Roll cage</b><span>A steel safety cell welded inside the shell that keeps the driver's space intact in a crash.</span></li>
+              <li data-n="03" class="xstep"><b>Cockpit</b><span>One seat, a race wheel and a dash display — everything the driver needs, nothing else.</span></li>
+              <li data-n="04" class="xstep"><b>Engine &amp; gearbox</b><span>The turbocharged four-cylinder and its sequential gearbox, set low for balance.</span></li>
+              <li data-n="05" class="xstep"><b>Wheels</b><span>Tyre, rim and brake — slicks for grip, forged rims to save weight, big brakes to stop.</span></li>
+              <li data-n="06" class="xstep"><b>Splitter &amp; aero</b><span>The splitter and floor pull the car down onto the track at speed.</span></li>
+            </ol>
+          </div>
+          <span class="xlabel" data-x="0.5" data-y="0.2">Body shell</span>
+          <span class="xlabel" data-x="0.48" data-y="0.43">Roll cage</span>
+          <span class="xlabel" data-x="0.37" data-y="0.5">Rear wing</span>
+          <span class="xlabel" data-x="0.5" data-y="0.6">Cockpit</span>
+          <span class="xlabel" data-x="0.62" data-y="0.68">Engine bay</span>
+          <span class="xlabel" data-x="0.42" data-y="0.8">Tyre · rim · brake</span>
+          <span class="xlabel" data-x="0.67" data-y="0.88">Splitter</span>
+          <div class="progress"><span id="x-bar"></span></div>
+        </div>
+      </section>
+
+      <!-- 3 · Details: close-up renders on cards that stack and recede. -->
+      <section id="details" class="details">
+        <div class="sec-head">
+          <p class="kicker mono">Up close</p>
+          <h2 class="sec-title">Every detail is <em>real geometry.</em></h2>
         </div>
         <div class="stack">
-          <article class="card">
-            <div class="card-in">
-              <canvas class="depth" data-photo="/img/sculpt.webp" data-depth="/img/sculpt_depth.png"></canvas>
-              <div class="card-copy">
-                <p class="mono">01 · Design</p>
-                <h3>Sculpted under one light</h3>
-                <p>Every surface was judged in a black room with a single strip light — if a reflection breaks, the panel is redone.</p>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card-in">
-              <canvas class="depth" data-photo="/img/robots.webp" data-depth="/img/robots_depth.png"></canvas>
-              <div class="card-copy">
-                <p class="mono">02 · Assembly</p>
-                <h3>412 robots, 31 people</h3>
-                <p>Robots weld and bond the carbon tub to 0.1 mm. People do what robots can't: the paint check, the stitching, the first drive.</p>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card-in">
-              <canvas class="depth" data-photo="/img/body.webp" data-depth="/img/body_depth.png"></canvas>
-              <div class="card-copy">
-                <p class="mono">03 · Structure</p>
-                <h3>Body-in-white: 182 kg</h3>
-                <p>The whole structure weighs less than two passengers, and the battery is part of it — the floor is the pack.</p>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card-in">
-              <canvas class="depth" data-photo="/img/night.webp" data-depth="/img/night_depth.png"></canvas>
-              <div class="card-copy">
-                <p class="mono">04 · Road</p>
-                <h3>Quiet in town. Not on the Ring.</h3>
-                <p>Comfort mode hums at 31 dB. Track mode drops it 20 mm, wakes the wing and opens the sound of the motors.</p>
-              </div>
-            </div>
-          </article>
+          <article class="card"><div class="card-in">
+            <img src="/stills/front.webp" alt="Front of the Nº77 race car: splitter, intakes and headlights" loading="lazy" />
+            <div class="card-copy"><p class="mono">01 · Nose</p><h3>Splitter and intakes</h3><p>The front feeds air to the radiators and brakes and pushes the nose down at speed.</p></div>
+          </div></article>
+          <article class="card"><div class="card-in">
+            <img src="/stills/wheel.webp" alt="Close-up of a racing wheel, tyre and brake" loading="lazy" />
+            <div class="card-copy"><p class="mono">02 · Contact</p><h3>Wheels and brakes</h3><p>Lightweight forged wheels, slick tyres and big brakes behind them — the only part that touches the track.</p></div>
+          </div></article>
+          <article class="card"><div class="card-in">
+            <img src="/stills/wing.webp" alt="The large rear wing from behind" loading="lazy" />
+            <div class="card-copy"><p class="mono">03 · Tail</p><h3>The rear wing</h3><p>Big enough to make its own weather — it trades top speed for grip in fast corners.</p></div>
+          </div></article>
+          <article class="card"><div class="card-in">
+            <img src="/stills/side.webp" alt="Side profile of the race car with its livery" loading="lazy" />
+            <div class="card-copy"><p class="mono">04 · Profile</p><h3>Low and long</h3><p>Seen from the side, it's all wheelbase and wing — a road car's outline stretched for the track.</p></div>
+          </div></article>
         </div>
       </section>
 
-      <!-- 3 · The lap: a track drawn by scroll; the head brakes into corners and glows hot. -->
+      <!-- 3 · The lap: drawn by scroll; it brakes into corners. -->
       <section id="lap" class="lap">
         <div class="stage lap-stage">
-          <canvas id="track" aria-label="Lap of the test circuit"></canvas>
+          <canvas id="track" aria-label="A lap of a circuit"></canvas>
           <div class="lap-copy">
-            <p class="kicker mono">Proving ground · 20.8 km</p>
-            <h2 class="sec-title split">One lap. <em>Scroll to drive it.</em></h2>
+            <p class="kicker mono">One flying lap · 4.6 km</p>
+            <h2 class="sec-title">Scroll <em>to drive it.</em></h2>
           </div>
           <dl class="lap-hud mono">
             <div><dt>Lap</dt><dd id="lap-time">0:00.00</dd></div>
             <div><dt>Speed</dt><dd><span id="lap-speed">0</span> km/h</dd></div>
             <div><dt>Sector</dt><dd id="lap-sector">S1</dd></div>
-            <div><dt>Battery</dt><dd><span id="lap-batt">100</span>%</dd></div>
+            <div><dt>Fuel</dt><dd><span id="lap-batt">100</span>%</dd></div>
           </dl>
         </div>
       </section>
 
-      <!-- 4 · Configure & reserve. -->
-      <section id="build" class="build">
-        <div class="build-view">
-          <canvas id="config" aria-label="Your AETHER One"></canvas>
+      <!-- 4 · Specs and how the site was made. -->
+      <section id="specs" class="specs">
+        <div class="sec-head">
+          <p class="kicker mono">Spec sheet</p>
+          <h2 class="sec-title">The car, <em>and the craft.</em></h2>
         </div>
-        <div class="build-panel">
-          <p class="kicker mono">Configure</p>
-          <h2 class="sec-title">Make it <em>yours.</em></h2>
-          <fieldset>
-            <legend class="mono">Paint · <span id="paint-name">Ice Silver</span></legend>
-            <div class="swatches" id="paints"></div>
-          </fieldset>
-          <fieldset>
-            <legend class="mono">Wheels</legend>
-            <div class="chips" id="wheels"></div>
-          </fieldset>
-          <fieldset>
-            <legend class="mono">Pack</legend>
-            <div class="chips" id="packs"></div>
-          </fieldset>
-          <div class="total">
-            <p class="mono">Your AETHER One</p>
-            <p class="price" id="price">$289,000</p>
-            <p class="small">Build slot deposit $2,500 — refundable until production starts.</p>
+        <div class="spec-grid">
+          <div class="spec-card">
+            <p class="mono">The car</p>
+            <dl>
+              <div><dt>Model</dt><dd>GR Supra GT300</dd></div>
+              <div><dt>Series</dt><dd>Super GT · GT300</dd></div>
+              <div><dt>Number</dt><dd>77</dd></div>
+              <div><dt>Body</dt><dd>Carbon fibre, widebody</dd></div>
+              <div><dt>Engine</dt><dd>Turbocharged four-cylinder</dd></div>
+              <div><dt>Aero</dt><dd>Splitter, flat floor, diffuser, rear wing</dd></div>
+            </dl>
           </div>
-          <button class="btn btn-wide" id="reserve">Reserve a build slot</button>
+          <div class="spec-card">
+            <p class="mono">How this site was made</p>
+            <dl>
+              <div><dt>3D model</dt><dd>357,094 triangles, 4K textures</dd></div>
+              <div><dt>Renderer</dt><dd>Blender Cycles, Mac GPU</dd></div>
+              <div><dt>Studio</dt><dd>Poly Haven HDRI + two light strips</dd></div>
+              <div><dt>Turntable</dt><dd>120 frames · 3° apart · 1920×1080</dd></div>
+              <div><dt>On the page</dt><dd>Scroll picks the frame; a canvas draws it</dd></div>
+              <div><dt>Stack</dt><dd>Vanilla JS, Lenis, Vite</dd></div>
+            </dl>
+          </div>
         </div>
       </section>
     </main>
 
-    <dialog id="reserve-dialog">
-      <form method="dialog" id="reserve-form">
-        <p class="kicker mono">Build slot</p>
-        <h3>Hold your AETHER One</h3>
-        <p class="small" id="reserve-sum"></p>
-        <label>Name<input name="name" required autocomplete="name" /></label>
-        <label>Email<input name="email" type="email" required autocomplete="email" /></label>
-        <label>City<input name="city" required autocomplete="address-level2" /></label>
-        <div class="dialog-actions">
-          <button value="cancel" formnovalidate class="btn btn-ghost">Cancel</button>
-          <button value="ok" class="btn">Hold my slot</button>
-        </div>
-      </form>
-      <div id="reserve-done" hidden>
-        <p class="kicker mono">Held</p>
-        <h3>Slot <span id="slot-no"></span> is yours.</h3>
-        <p class="small">A demo — nothing was charged and nothing was sent.</p>
-        <button class="btn" id="reserve-close">Close</button>
-      </div>
-    </dialog>
-
     <footer class="foot">
-      <p class="logo">AETHER<span>/</span>ONE</p>
-      <p class="small">A concept site by Amartya Ghosh. AETHER is fictional.</p>
+      <p class="logo"><span class="logo-n">Nº77</span> GT300</p>
+      <p class="small">A fan-made studio showcase by Amartya Ghosh. Not affiliated with Toyota, TOM'S or Super GT; names and liveries belong to their owners.</p>
       <details class="credits small">
         <summary>Credits</summary>
-        <p>3D car: “Car Concept” © 2024 Darmstadt Graphics Group GmbH, model &amp; textures by Eric Chadwick, CC BY 4.0 (Khronos glTF Sample Assets), logos replaced. Studio light: Poly Haven “Studio Small 09”, CC0. Photos: Unsplash (Unsplash License). Depth maps made with Depth-Anything V2 Small (Apache-2.0).</p>
+        <p>3D model: “ToyotaGR Supra GT300 | www.vecarz.com” by vecarz (kadir kandemir), licensed under Creative Commons Attribution 4.0 — sketchfab.com/3d-models/toyotagr-supra-gt300-wwwvecarzcom-1666c35171b649a8a927da53bdadf228. Studio light: Poly Haven “Studio Small 09”, CC0. Rendered in Blender (Cycles).</p>
       </details>
     </footer>
     <script type="module" src="/src/main.js"></script>

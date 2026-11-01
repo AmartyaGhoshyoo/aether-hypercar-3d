@@ -2,13 +2,13 @@
 // spends longer in tight corners (speed = 1 / (1 + 9 · turn)), so the line brakes into each
 // bend and fires out of it. The head glows hot, the drawn line cools behind it.
 
-// A made-up 20.8 km circuit: hand-placed control points, smoothed with Catmull-Rom.
+// A made-up 4.6 km circuit: hand-placed control points, smoothed with Catmull-Rom.
 const CTRL = [
   [0.08, 0.62], [0.2, 0.7], [0.33, 0.66], [0.38, 0.52], [0.47, 0.46], [0.58, 0.55], [0.66, 0.7], [0.8, 0.72],
   [0.9, 0.6], [0.88, 0.42], [0.78, 0.36], [0.74, 0.22], [0.62, 0.16], [0.5, 0.24], [0.42, 0.18], [0.3, 0.2],
   [0.2, 0.3], [0.24, 0.42], [0.14, 0.48],
 ];
-const LAP_S = 6 * 60 + 41.83;
+const LAP_S = 60 + 37.42;
 
 function catmull(points, perSeg = 60) {
   const out = [];
@@ -93,7 +93,7 @@ export function createLap(canvas, hud) {
         for (let i = 1; i <= idx; i++) {
           const age = idx - i;
           const heat = Math.max(0, 1 - age / tail);
-          g.strokeStyle = heat > 0 ? `rgba(${155 + heat * 100},${92 + heat * 150},255,${0.55 + heat * 0.45})` : "rgba(155,92,255,0.55)";
+          g.strokeStyle = heat > 0 ? `rgba(${225 + heat * 30},${24 + heat * 210},${40 + heat * 190},${0.6 + heat * 0.4})` : "rgba(225,24,40,0.6)";
           g.lineWidth = 3 + heat * 3;
           g.beginPath();
           g.moveTo(X(pts[i - 1]), Y(pts[i - 1]));
@@ -105,8 +105,8 @@ export function createLap(canvas, hud) {
         g.globalCompositeOperation = "lighter";
         const grd = g.createRadialGradient(hx, hy, 0, hx, hy, 46);
         grd.addColorStop(0, "rgba(255,255,255,0.95)");
-        grd.addColorStop(0.2, "rgba(196,166,255,0.6)");
-        grd.addColorStop(1, "rgba(155,92,255,0)");
+        grd.addColorStop(0.2, "rgba(255,120,120,0.6)");
+        grd.addColorStop(1, "rgba(225,24,40,0)");
         g.fillStyle = grd;
         g.beginPath();
         g.arc(hx, hy, 46, 0, Math.PI * 2);

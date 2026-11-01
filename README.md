@@ -1,23 +1,30 @@
-# AETHER One — an electric hypercar site (concept)
+# Nº77 GR Supra GT300 — a cinematic studio showcase
 
-A cinematic, true-3D product site for a fictional electric hypercar. Built by Amartya Ghosh as a
-portfolio piece. Vanilla JavaScript + three.js + Lenis, bundled by Vite.
+A scroll-driven showcase of a real HD race-car model, built by Amartya Ghosh. Instead of drawing the
+car live in the browser, the car is **rendered offline in Blender (Cycles)** — 120 film-quality frames,
+one every 3° — and the page flips through them as you scroll. That's how product sites get a
+photographic look that real-time 3D can't reach.
 
 ## What it does
 
-1. **The drive (600svh, pinned):** one real 3D car in a dark studio. Scrolling flies the camera
-   around it on a spline — front ¾, side (with aero streamlines laid over the real body by ray-casting),
-   rear, straight down, close front — while five chapters of copy swap in. Moving the cursor
-   **x-rays the car**: the scene is drawn twice (paint, and a glowing fresnel "ghost" of every part) and
-   a trail painted by the cursor mixes them, with a violet edge. A scan band does the same once on load.
-2. **Made (sticky stack):** four cards that recede (scale 0.9, darken) as the next slides over. Each
-   photo is **raised into 3D** from a depth map and filmed by a camera that drifts with cursor and scroll.
-3. **The lap (420svh, pinned):** a circuit drawn by scroll where time follows the scroll, so the line
-   brakes into corners and fires out of them; a white-hot head cools to violet; live lap/speed/sector/battery.
-4. **Configure:** the same car on a drag-to-turn turntable; paint and wheels change the shared materials
-   (the hero car changes too), packs change the price; "Reserve" opens a build-slot form (demo only).
+1. **The spin (560svh, pinned):** a canvas draws frame `round(progress × 119)`; the car turns a full
+   360° while five chapters of copy swap in. Frames load in a smart order (every 8th first) so the car
+   appears instantly, and an honest loader fills with the real download.
+2. **Details:** close-up renders (nose, wheel, wing, profile) on cards that stack and recede.
+3. **The lap:** a circuit drawn by scroll where time follows the scroll, so the line brakes into corners.
+4. **Spec sheet:** the car, and how the site was made.
 
-Honest loader (fills with the real 9 MB download), reduced-motion support, phone framing.
+## Make the frames again (or with another car)
+
+```bash
+# 120 turntable frames (≈ 90 s each at 1920×1080 on an M-series Mac)
+STUDIO_KEEP=1 STUDIO_LENS=52 /Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup \
+  -P ~/Downloads/assets/car/blender/studio.py -- <car.glb> <studio.hdr> <out_dir> 0 119 120 64 1920 1080
+# close-up stills
+STUDIO_KEEP=1 STUDIO_STILLS=1 … same command … <stills_dir> 0 0 1 128 2400 1350
+# PNG → WebP for the site (desktop 1920 + phone 960)
+python3 ~/Downloads/assets/car/blender/to_web.py <out_dir> public
+```
 
 ## Run
 
@@ -26,22 +33,8 @@ npm install
 npm run dev      # http://localhost:3007
 ```
 
-## Files
+## Credits
 
-- `src/car.js` — loads the model once, normalises it, swaps the sample logos for an AETHER plate, paints
-- `src/hero.js` — studio, camera spline, cursor x-ray composite, streamlines
-- `src/depthphoto.js` — photo + depth map → displaced mesh with a moving camera
-- `src/lap.js` — circuit, braking time curve, hot head
-- `src/config.js` — turntable configurator
-- `src/main.js` — Lenis + the single ticker, split text, stack recede, configurator UI
-
-To change a photo: put it in `public/img/`, make a depth map with Depth-Anything V2
-(`depth.py photo.jpg photo_depth.png`) and point the card's `data-photo` / `data-depth` at them.
-
-## Credits (all free)
-
-- Car: “Car Concept” © 2024 Darmstadt Graphics Group GmbH, model & textures by Eric Chadwick,
-  CC BY 4.0, from the Khronos glTF Sample Assets (textures downscaled; logos replaced)
-- Studio light: Poly Haven “Studio Small 09”, CC0
-- Photos: Unsplash (Unsplash License) — 1645400379459, 1777383975764, 1777642328916, 1766353134008
-- Depth maps: Depth-Anything V2 Small (Apache-2.0)
+- 3D model: “ToyotaGR Supra GT300 | www.vecarz.com” by **vecarz** (kadir kandemir), CC BY 4.0 (Sketchfab)
+- Studio light: Poly Haven “Studio Small 09”, CC0 · Rendered in Blender (Cycles)
+- Fan-made showcase; not affiliated with Toyota, TOM'S or Super GT.
