@@ -51,7 +51,7 @@ em { font-style: normal; color: var(--red); }
 @media (max-width: 720px) { .story .stage::after, .spin .stage::after { inset: 50% 0 0 0; background: linear-gradient(0deg, rgba(4, 4, 6, 0.9), transparent); } }
 #sseq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: transform; }
 .story .stage, .spin .stage { background: #050506; }
-.beat, .part { position: absolute; z-index: 2; left: clamp(16px, 5vw, 72px); max-width: 27rem; opacity: 0; transform: translateY(18px); transition: opacity 0.45s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; }
+.beat, .part { position: absolute; z-index: 2; left: clamp(16px, 4vw, 56px); max-width: min(27rem, 30vw); opacity: 0; transform: translateY(18px); transition: opacity 0.45s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; }
 .beat.on, .part.on { opacity: 1; transform: none; pointer-events: auto; }
 .beat-hero { bottom: 12svh; }
 .beat-mid, .beat-end { top: 50%; margin-top: -9rem; }
@@ -68,7 +68,7 @@ em { font-style: normal; color: var(--red); }
 .rail li.on::after { width: 40px; background: var(--red); }
 .spin-copy { position: absolute; left: clamp(16px, 5vw, 72px); top: 50%; transform: translateY(-50%); max-width: 24rem; z-index: 2; }
 @media (max-width: 720px) {
-  .beat, .part { left: 16px; right: 16px; }
+  .beat, .part { left: 16px; right: 16px; max-width: none; }
   .beat-hero { bottom: 70px; }
   .beat-mid, .beat-end, .part { top: auto; bottom: 64px; margin-top: 0; }
   .part { padding: 18px; }
@@ -88,7 +88,7 @@ em { font-style: normal; color: var(--red); }
 .ch.is-on { opacity: 1; pointer-events: auto; }
 .ch[data-ch="0"] { top: auto; bottom: 12svh; transform: none; }
 .ch .kicker { margin-bottom: 14px; }
-.title { font: 800 clamp(3.6rem, 10vw, 9rem) / 0.82 var(--display); text-transform: uppercase; font-style: italic; letter-spacing: -0.01em; }
+.title { font: 800 clamp(3.4rem, 7.5vw, 7rem) / 0.84 var(--display); text-transform: uppercase; font-style: italic; letter-spacing: -0.01em; }
 .big { font: 800 clamp(3rem, 7.5vw, 6.5rem) / 0.86 var(--display); text-transform: uppercase; font-style: italic; }
 .lede { margin-top: 18px; color: rgba(244, 244, 242, 0.75); max-width: 24rem; }
 .ch .btn { margin-top: 24px; }

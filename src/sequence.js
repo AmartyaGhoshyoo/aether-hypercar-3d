@@ -47,8 +47,10 @@ export function createSequence({ canvas, dir, prefix, count, onProgress, layout 
   resize();
   addEventListener("resize", resize);
 
-  function draw(pos) {
-    const f = Math.max(0, Math.min(count - 1, Math.round(pos)));
+  // Always show one sharp frame (no blending). `wrap` lets a turntable go round past 0/last.
+  function draw(pos, wrap = false) {
+    let f = Math.round(pos);
+    f = wrap ? ((f % count) + count) % count : Math.max(0, Math.min(count - 1, f));
     if (f === last) return;
     const im = nearest(f);
     if (!im) return;
@@ -64,7 +66,21 @@ export function createSequence({ canvas, dir, prefix, count, onProgress, layout 
     g.setTransform(k, 0, 0, k, 0, 0);
     g.fillStyle = "#050506";
     g.fillRect(0, 0, W, H);
-    g.drawImage(im, W * cx - w / 2, H * cy - h / 2, w, h);
+    const x = W * cx - w / 2, y = H * cy - h / 2;
+    g.drawImage(im, x, y, w, h);
+    // Melt the picture's edges into the page so it has no visible border.
+    const band = (gx0, gy0, gx1, gy1, rx, ry, rw, rh) => {
+      const gr = g.createLinearGradient(gx0, gy0, gx1, gy1);
+      gr.addColorStop(0, "#050506");
+      gr.addColorStop(1, "rgba(5,5,6,0)");
+      g.fillStyle = gr;
+      g.fillRect(rx, ry, rw, rh);
+    };
+    const ex = w * 0.16, ey = h * 0.14;
+    if (x > 0) band(x, 0, x + ex, 0, x - 1, 0, ex + 1, H);
+    if (x + w < W) band(x + w, 0, x + w - ex, 0, x + w - ex, 0, ex + 1, H);
+    if (y > 0) band(0, y, 0, y + ey, 0, y - 1, W, ey + 1);
+    if (y + h < H) band(0, y + h, 0, y + h - ey, 0, y + h - ey, W, ey + 1);
   }
   return { start, draw };
 }

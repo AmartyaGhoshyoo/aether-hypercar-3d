@@ -24,7 +24,9 @@ const mouse = { x: 0, y: 0 }, m = { x: 0, y: 0 };
 addEventListener("pointermove", (e) => ((mouse.x = e.clientX / innerWidth - 0.5), (mouse.y = e.clientY / innerHeight - 0.5)), { passive: true });
 
 // Phones: the picture sits in the top part; wide screens: a little right of centre.
-const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.max(W / im.width, H / im.height), cx: 0.5, cy: 0.5 });
+// Wide screens: the car sits to the right of the copy, a little smaller than the screen and never
+// stretched beyond its real pixels (so it stays sharp); the picture's edges melt into black.
+const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.min(Math.max(W / im.width, H / im.height) * 0.8, 1), cx: 0.62, cy: 0.5 });
 
 // ── The story ─────────────────────────────────────────────────────────────
 const SF = 200;
@@ -52,6 +54,17 @@ const phases = [[0, "Assembled"], [24, "Coming apart"], [76, "Part tour"], [176,
 // ── The spin ──────────────────────────────────────────────────────────────
 const SPIN = 120;
 const spin = $("#spin");
+let turn = 0, turnTarget = 0, dragX = null, dragBase = 0;
+const spinStage = $("#spin .stage");
+spinStage.addEventListener("pointermove", (e) => {
+  if (e.pointerType === "mouse") turnTarget = (e.clientX / innerWidth - 0.5) * 60;
+  else if (dragX !== null) turnTarget = dragBase + ((e.clientX - dragX) / innerWidth) * 90;
+});
+spinStage.addEventListener("pointerdown", (e) => {
+  if (e.pointerType !== "mouse") ((dragX = e.clientX), (dragBase = turnTarget));
+});
+addEventListener("pointerup", () => (dragX = null));
+spinStage.addEventListener("pointerleave", (e) => e.pointerType === "mouse" && (turnTarget = 0));
 const spinSeq = createSequence({ canvas: $("#seq"), dir: small ? "/frames-m" : "/frames", prefix: "f_", count: SPIN, layout });
 
 // ── Details stack + lap ───────────────────────────────────────────────────
@@ -85,13 +98,17 @@ function tick(now) {
 
   if (onScreen(spin)) {
     const p = pinProgress(spin);
-    spinPos = p * (SPIN - 1);
-    spinSeq.draw(spinPos);
+    // Scroll turns the car, and the cursor turns it further: left/right edge = ±90°.
+    // On touch screens, dragging sideways does the same.
+    turn += (turnTarget - turn) * (still ? 1 : 0.12);
+    spinPos = p * (SPIN - 1) + turn;
+    spinSeq.draw(spinPos, true);
     const f = Math.round(spinPos);
     if (f !== lastF) {
       lastF = f;
-      $("#hud-rot").textContent = `${String(f * 3).padStart(3, "0")}°`;
-      $("#hud-frame").textContent = String(f + 1).padStart(3, "0");
+      const w = ((f % SPIN) + SPIN) % SPIN;
+      $("#hud-rot").textContent = `${String(w * 3).padStart(3, "0")}°`;
+      $("#hud-frame").textContent = String(w + 1).padStart(3, "0");
     }
     $("#spin-bar").style.width = `${p * 100}%`;
   }
