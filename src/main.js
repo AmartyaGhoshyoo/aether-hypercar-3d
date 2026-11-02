@@ -4,6 +4,7 @@
 import Lenis from "lenis";
 import { createLap } from "./lap.js";
 import { createSequence } from "./sequence.js";
+import { createScrub } from "./scrub.js";
 
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (s, r = document) => r.querySelector(s);
@@ -28,26 +29,23 @@ addEventListener("pointermove", (e) => ((mouse.x = e.clientX / innerWidth - 0.5)
 // stretched beyond its real pixels (so it stays sharp); the picture's edges melt into black.
 const layout = (W, H, im) => (W < 720 ? { scale: (W / im.width) * 1.5, cx: 0.5, cy: 0.33 } : { scale: Math.min(Math.max(W / im.width, H / im.height) * 0.8, 1), cx: 0.62, cy: 0.5 });
 
-// ── The story ─────────────────────────────────────────────────────────────
-const SF = 400;
+// ── The story: one all-intra video scrubbed by scroll ─────────────────────
+const SF = 400, FPS = 40; // 400 rendered frames at 40 fps = a 10 s film; text is timed in frames
 const veil = $("#veil"), bar = $(".veil-bar span"), pct = $(".veil-pct b");
-const storySeq = createSequence({
-  canvas: $("#sseq"),
-  dir: small ? "/story-m" : "/story",
-  prefix: "s_",
-  count: SF,
-  layout,
+const svid = $("#svid");
+const storyScrub = createScrub({
+  video: svid,
+  url: small ? "/story-m.mp4" : "/story.mp4",
   onProgress: (k) => {
     bar.style.width = `${k * 100}%`;
     pct.textContent = `${Math.round(k * 100)}%`;
-    // Every 8th frame is enough to start: open the page then, keep loading behind it.
-    if (k >= 0.14 && !veil.classList.contains("done")) veil.classList.add("done");
-    if (k >= 1) spinSeq.start();
+  },
+  onReady: () => {
+    veil.classList.add("done");
+    spinSeq.start(); // the 360° images load once the story is in
   },
 });
-storySeq.start();
 const story = $("#story");
-const sseq = $("#sseq");
 const timed = $$("#story [data-from]").map((el) => ({ el, from: +el.dataset.from, to: +el.dataset.to }));
 const phases = [[0, "Assembled"], [48, "Coming apart"], [152, "Part tour"], [352, "Rebuilding"], [392, "Assembled"]];
 
@@ -73,7 +71,7 @@ const lapEl = $("#lap");
 const lap = createLap($("#track"), { time: $("#lap-time"), speed: $("#lap-speed"), sector: $("#lap-sector"), batt: $("#lap-batt") });
 
 // ── The one ticker ────────────────────────────────────────────────────────
-let sPos = 0, spinPos = 0, lastS = -1, lastF = -1;
+let spinPos = 0, lastS = -1, lastF = -1;
 function tick(now) {
   requestAnimationFrame(tick);
   lenis?.raf(now);
@@ -83,10 +81,8 @@ function tick(now) {
 
   if (onScreen(story)) {
     const p = pinProgress(story);
-    sPos = p * (SF - 1);
-    storySeq.draw(sPos);
-    sseq.style.transform = `translate3d(${-m.x * 14}px, ${-m.y * 8}px, 0) scale(1.03)`;
-    const f = Math.round(sPos);
+    const t = storyScrub.update(p, still);
+    const f = Math.min(SF - 1, Math.round(t * FPS));
     if (f !== lastS) {
       lastS = f;
       timed.forEach(({ el, from, to }) => el.classList.toggle("on", f >= from && f <= to));
